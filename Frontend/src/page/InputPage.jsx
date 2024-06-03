@@ -13,7 +13,7 @@ const InputPage = () => {
     const [pageText, setPageText] = useState('');
     const [books, setBooks] = useState(false);
 
-    const url = 'http://localhost:8080';
+    const url = 'https://book-creator-one.vercel.app/';
 
     const handleSave = async () => {
         try {
