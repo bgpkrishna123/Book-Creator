@@ -1,11 +1,37 @@
+import React, { useEffect, useState } from 'react';
 import { Text, Box } from '@chakra-ui/react';
-import React from 'react';
+import axios from 'axios'; 
+import url from './vars';
 
 const FrontPage = () => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [coverImageUrl, setCoverImageUrl] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userDetails = JSON.parse(localStorage.getItem("userDetails")); 
+        const id = userDetails.id;
+        if (userDetails && id) {
+          const response = await axios.get(`${url}/books/${id}`);
+          const data = response.data[0];
+          console.log(response.data[0]);
+          setTitle(data.title);
+          setAuthor(data.author);
+          setCoverImageUrl(data.coverImages[0].imageUrl);
+          console.log(data[0].coverImages);
+        } else {
+          console.error('User details not found in localStorage');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); 
+  }, []); 
   
-  const title = "Nature";
-  const author = "Krishna";
-  const coverImageUrl = "https://cdn.pixabay.com/photo/2024/02/27/00/13/heliconia-8599119_1280.jpg";
 
   return (
     <Box
@@ -14,17 +40,19 @@ const FrontPage = () => {
       backgroundPosition="center"
       height="100vh"
       display="flex"
+      border="2px solid"
       flexDirection="column"
       justifyContent="space-between"
       alignItems="center"
       textAlign="center"
       padding="20px"
+      margin={20}
     >
-      <Text as="h3"  fontSize="3xl" fontWeight="bold" color="white" mt="80px">
+      <Text as="h3" fontSize="3xl" fontWeight="bold" color="black" mt="80px">
         A Novel by {author}
       </Text>
-      <Text as="h1" fontSize="6xl" fontWeight="bold" color="white" mb={50}>
-        {title}
+      <Text as="h1" fontSize="6xl" fontWeight="bold" color="black" mb={50}>
+       { title}
       </Text>
     </Box>
   );

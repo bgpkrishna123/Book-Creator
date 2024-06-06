@@ -7,8 +7,8 @@ const { createBook, getBooks, getBookById, updateBook, deleteBook, updateBookByU
 const bookRouter = express.Router();
 
 bookRouter.post("/", auth, createBook); 
-bookRouter.get("/", auth, getBooks); 
-bookRouter.get("/:id", auth, getBookById); 
+bookRouter.get("/",  getBooks); 
+bookRouter.get("/:id", getBookById); 
 bookRouter.put("/:id", auth, updateBook);
 bookRouter.patch("/:id", auth, updateBookByUser); 
 bookRouter.delete("/:id", auth, isAdmin, deleteBook); 

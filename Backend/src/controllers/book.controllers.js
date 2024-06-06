@@ -24,7 +24,8 @@ const createBook = async (req, res) => {
 
 const getBooks = async (req, res) => {
   try {
-    const books = await Book.find({ user: req.userId });
+    console.log(req.params);
+    const books = await Book.find({ user: req.params.id });
     res.status(200).json(books);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -33,7 +34,7 @@ const getBooks = async (req, res) => {
 
 const getBookById = async (req, res) => {
   try {
-    const book = await Book.findById(req.params.id);
+    const book = await Book.find({ user: req.params.id });
     if (!book) {
       return res.status(404).json({ message: "Book not found" });
     }

@@ -1,24 +1,50 @@
 import { Box, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'; 
+import url from './vars';
 
 const Page4 = () => {
-  const backgroundImageUrl = "https://cdn.pixabay.com/photo/2024/02/27/00/13/heliconia-8599119_1280.jpg";
-  const title = "Nature";
-  const content = "Page 4 content";
+  const [title, setTitle] = useState("");
+  const [text, setText] = useState("");
+  const [coverImageUrl, setCoverImageUrl] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userDetails = JSON.parse(localStorage.getItem("userDetails")); 
+        const id = userDetails.id;
+        if (userDetails && id) {
+          const response = await axios.get(`${url}/books/${id}`);
+          const data = response.data[0];
+          setTitle(data.title);
+          setText(data.pages[0].text);
+          setCoverImageUrl(data.pages[0].backgroundImage);
+          console.log(data.pages[0].backgroundImage);
+        } else {
+          console.error('User details not found in localStorage');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData(); 
+  }, []); 
 
   return (
     <Box
-      backgroundImage={`url(${backgroundImageUrl})`}
+      backgroundImage={`url(${coverImageUrl})`}
       backgroundSize="cover"
       backgroundPosition="center"
       height="100vh"
       display="flex"
+      border="2px solid"
       flexDirection="column"
-      justifyContent="center"
+      justifyContent="space-between"
       alignItems="center"
       textAlign="center"
       padding="20px"
-      color="white"
+      margin={20}
     >
       <Text as="h1" fontSize="6xl" fontWeight="bold" color="yellow.300" mb={8}>
         {title}
@@ -29,7 +55,7 @@ const Page4 = () => {
         borderRadius="md"
       >
         <Text fontSize="xl" color="cyan.200">
-          {content}
+          {text}
         </Text>
       </Box>
     </Box>

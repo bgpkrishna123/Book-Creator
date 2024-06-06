@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Container, Flex, FormControl, FormLabel, Input, Spacer, Textarea } from '@chakra-ui/react';
 import axios from 'axios';
 import Book from '../components/Book';
+import url from '../components/vars';
 
 const InputPage = () => {
     const [title, setTitle] = useState('');
@@ -13,9 +14,9 @@ const InputPage = () => {
     const [pageText, setPageText] = useState('');
     const [books, setBooks] = useState(false);
 
-    const url = 'https://book-creator-one.vercel.app/';
 
     const handleSave = async () => {
+
         try {
             const data = {
                 title,
@@ -32,6 +33,10 @@ const InputPage = () => {
             };
 
             const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/auth';
+                return;
+            }
             const response = await axios.post(`${url}/books`, data, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,8 +44,7 @@ const InputPage = () => {
                 }
             });
             setBooks(true);
-            localStorage.setItem('data', JSON.stringify(response.data));
-            console.log('PDF generated:', response.data);
+            console.log('Book created');
         } catch (error) {
             console.error('Error generating PDF:', error.message);
         }

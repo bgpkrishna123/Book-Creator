@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Grid, GridItem, Button, Input, Text } from '@chakra-ui/react';
 import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom'; 
+import url from '../components/vars';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,7 +12,6 @@ const Auth = () => {
   const [username, setUsername] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const url = 'http://localhost:8080';
   const toast = useToast();
   const navigate = useNavigate(); 
 
