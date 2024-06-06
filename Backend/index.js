@@ -10,7 +10,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 const corsOptions = {
-    origin: 'https://book-creator-5at3.vercel.app',
+    origin: '*',
   };
   
   app.use(cors(corsOptions));
