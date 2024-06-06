@@ -19,7 +19,6 @@ const Page2 = () => {
           setTitle(data.title);
           setText(data.pages[0].text);
           setCoverImageUrl(data.pages[0].backgroundImage);
-          console.log(data.pages[0].backgroundImage);
         } else {
           console.error('User details not found in localStorage');
         }

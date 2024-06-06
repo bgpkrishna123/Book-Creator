@@ -16,11 +16,9 @@ const FrontPage = () => {
         if (userDetails && id) {
           const response = await axios.get(`${url}/books/${id}`);
           const data = response.data[0];
-          console.log(response.data[0]);
           setTitle(data.title);
           setAuthor(data.author);
           setCoverImageUrl(data.coverImages[0].imageUrl);
-          console.log(data[0].coverImages);
         } else {
           console.error('User details not found in localStorage');
         }

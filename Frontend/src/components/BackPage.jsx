@@ -6,7 +6,6 @@ import url from './vars';
 
 const BackPage = () => {
   const [title, setTitle] = useState("");
-  const [text, setText] = useState("");
   const [coverImageUrl, setCoverImageUrl] = useState("");
   const [user, setUser] = useState("");
   const [createdAt, setCreatedAt] = useState("");
@@ -14,15 +13,14 @@ const BackPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userDetails = JSON.parse(localStorage.getItem("userDetails")); 
+        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+        setUser(userDetails.username);
         const id = userDetails.id;
         if (userDetails && id) {
           const response = await axios.get(`${url}/books/${id}`);
           const data = response.data[0];
           setTitle(data.title);
-          setText(data.pages[0].text);
           setCoverImageUrl(data.pages[0].backgroundImage);
-          setUser(data.user);
           setCreatedAt(data.createdAt);
         } else {
           console.error('User details not found in localStorage');
