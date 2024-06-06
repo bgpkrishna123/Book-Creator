@@ -1,34 +1,50 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const connectToDB = require("./src/configs/db");
 const UserRouter = require("./src/routes/user.routes");
-const bookRouter = require("./src/routes/book.routes");
-const cors = require("cors");
-
+const BookRouter = require("./src/routes/book.routes");
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-
 app.use(express.json());
+
+const allowedOrigins = [
+  'http://localhost:5174', 
+  'https://book-creator-5at3.vercel.app'
+];
+
 app.use(cors({
-     origin: '*'
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
 }));
 
 app.use("/users", UserRouter);
-app.use("/books", bookRouter);
-
+app.use("/books", BookRouter);
 
 app.get("/", (req, res) => {
-    res.send("Hello World");
+  res.send("Hello World");
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 app.listen(port, async () => {
-    try {
-        await connectToDB(process.env.DB_URL);
-        console.log("Connected to database successfully");
-        console.log(`Server is running at http://localhost:${port}`);
-    } catch (err) {
-        console.log("Error connecting to the database: ", err.message);
-    }
+  try {
+    await connectToDB(process.env.DB_URL);
+    console.log("Connected to database successfully");
+    console.log(`Server is running at http://localhost:${port}`);
+  } catch (err) {
+    console.log("Error connecting to the database: ", err.message);
+  }
 });
