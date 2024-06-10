@@ -22,7 +22,6 @@ const Auth = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (isLogin) {
       try {
         const response = await axios.post(`${url}/users/login`, {
